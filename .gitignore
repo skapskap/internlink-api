@@ -1,0 +1,34 @@
+# Compiled Object files, Static and Dynamic libs (Shared Objects)
+*.o
+*.a
+*.so
+
+# Executables
+main
+
+# Log files
+*.log
+
+# Binary and source packages
+*.bin
+*.tar.gz
+
+# Generated files and directories
+/bin/
+/vendor/
+/internal/models/*
+
+# IDE-specific files
+.vscode/
+.idea/
+
+# OS-specific
+.DS_Store
+
+# Compiled Go files
+*.exe
+*.test
+*.prof
+
+# Environment variables file (if you're using one)
+.env
