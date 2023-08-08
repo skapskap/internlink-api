@@ -8,5 +8,6 @@ import (
 
 func SetupRoutes(r *mux.Router, db *sql.DB) {
 	r.HandleFunc("/register", handlers.RegisterUserHandler(db)).Methods("POST")
+	r.HandleFunc("/login", handlers.LoginHandler(db)).Methods("POST")
 	// Outras rotas
 }

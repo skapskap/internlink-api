@@ -13,7 +13,7 @@ import (
 func main() {
 	r := mux.NewRouter()
 
-	connData := "user=postgres password=hasdheod789 dbname=internlink sslmode=disable"
+	connData := "user=postgres password=funyarinpa999 dbname=internlink sslmode=disable"
 	db, err := sql.Open("postgres", connData)
 	if err != nil {
 		log.Fatal(err)

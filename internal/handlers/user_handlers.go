@@ -69,3 +69,43 @@ func RegisterUserHandler(db *sql.DB) http.HandlerFunc {
 		w.Write([]byte("User registered successfully"))
 	}
 }
+
+func LoginHandler(db *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var loginInfo struct {
+			Username string `json:"username"`
+			Password string `json:"password"`
+		}
+
+		decoder := json.NewDecoder(r.Body)
+		err := decoder.Decode(&loginInfo)
+		if err != nil {
+			http.Error(w, "Invalid request data", http.StatusBadRequest)
+			return
+		}
+
+		var storedUser models.User
+		query := "SELECT id, password FROM users WHERE username = $1"
+		err = db.QueryRow(query, loginInfo.Username).Scan(&storedUser.ID, &storedUser.Password)
+		if err != nil {
+			if err == sql.ErrNoRows {
+				http.Error(w, "Invalid username or password", http.StatusUnauthorized)
+				return
+			}
+			log.Println("Failed to retrieve user:", err)
+			http.Error(w, "Failed to login", http.StatusInternalServerError)
+			return
+		}
+
+		err = bcrypt.CompareHashAndPassword([]byte(storedUser.Password), []byte(loginInfo.Password))
+		if err != nil {
+			http.Error(w, "Invalid username or password", http.StatusUnauthorized)
+			return
+		}
+
+		// Preciso gerar e inserir o token de sessão agora
+
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("Logged in successfully"))
+	}
+}
